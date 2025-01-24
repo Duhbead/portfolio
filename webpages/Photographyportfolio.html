@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="hydrated">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,7 +8,10 @@
     content="A portfolio showcasing my photography and contact information."
   />
   <link href="https://fonts.googleapis.com/css?family=Aboreto" rel="stylesheet" />
-  <title>Portfolio with Staggered Sidebar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@200..800&display=swap" rel="stylesheet">
+  <title>Portfolio</title>
   <style>
     /* Remove margins and ensure the body fills the viewport */
     body {
@@ -28,14 +31,30 @@
       z-index: -1; /* Place the video behind all other content */
     }
 
+    /* Style for opening */
+    .opening a {
+      display: block;
+      border-radius: 0.3125rem; /* 5px → 0.3125rem */
+      padding: 0.625rem 1.25rem; /* 10px 20px → 0.625rem 1.25rem */
+      font-family: 'Dosis', Geneva, Tahoma, sans-serif;
+      font-size: 1.25rem; /* 20px → 1.25rem */
+      text-decoration: none;
+      text-align: left;
+      color: rgb(255, 255, 255);
+      background-color: rgba(255, 255, 255, 0); /* Transparent background */
+      text-shadow: 0.125rem 0.125rem 0.25rem rgba(64, 2, 2, 0.292); /* 2px 2px 4px → rem */
+      opacity: 0; /* Start hidden */
+      animation: fadeInMove 5s cubic-bezier(.44, 0, .51, .99) forwards; /* Custom easing */
+    }
+
     /* Style for the sidebar */
     .sidebar {
       position: fixed;
-      top: 20%; /* Adjust based on where you want the menu to appear vertically */
-      left: 1.25rem; /* 20px → 1.25rem */
+      top: 80%; /* Adjust based on where you want the menu to appear vertically */
+      left: 3rem; /* 20px → 1.25rem */
       z-index: 1; /* Place above the video */
       display: flex;
-      flex-direction: column; /* Stack items vertically */
+      flex-direction: row; /* Stack items horizontally */
       gap: 1.25rem; /* 20px → 1.25rem */
     }
 
@@ -140,6 +159,10 @@
   </video>
 
   <!-- Sidebar Content -->
+   <div class="opening">
+    <a href="#openingstatement">This is my attempt to show others some of the fleeting moments of beauty I was fortunate to experience and even more fortunate to capture.<br>
+      Beauty through my eyes in a specific place and a specific time in this infinitely large universe.</a>
+   </div>
   <div class="sidebar">
     <a href="#about" aria-label="" class="hover-text">About Me</a>
     <a href="#portfolio" aria-label="" class="hover-text">Photography</a>
