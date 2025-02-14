@@ -1,0 +1,9 @@
+video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%; /* Stretch video to cover the width */
+    height: 100%; /* Stretch video to cover the height */
+    object-fit: cover; /* Ensure the video covers the screen without distortion */
+    z-index: -1; /* Place the video behind all other content */
+  }

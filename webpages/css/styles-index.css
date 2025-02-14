@@ -1,0 +1,248 @@
+
+    /* Remove margins and ensure the body fills the viewport */
+    body {
+      cursor: none;
+      margin: 0;
+      height: 100vh;
+      overflow: hidden; /* Prevent scrollbars caused by the video */
+    }
+
+    svg {
+      overflow: visible;
+    }
+
+    .custom-cursor {
+      position: fixed;
+      width: 2.5rem;  /* Adjust using rem for responsiveness */
+      height: 2.5rem;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      z-index: 10000;
+    }
+
+    .custom-cursor,
+    .custom-cursor svg {
+      /* Ensures rotation happens around the center of the element */
+      transform-origin: 50% 50%;
+    }
+
+    .cursor-trail {
+      position: fixed;
+      width: 2.5rem;
+      height: 2.5rem;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      z-index: 9999;
+      animation: fadeOutShrink 1.2s forwards;
+    }
+
+    @keyframes fadeOutShrink {
+      0% {
+      opacity: 0.9;
+      transform: translate(-50%, -50%) scale(1);
+      }
+      100% {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.0);
+      }
+    }
+    
+    .rotate-cursor {
+      animation: rotateCursor 5s linear infinite;
+    }
+
+    @keyframes rotateCursor {
+      from { transform: translate(-50%, -50%) rotate(0deg); }
+      to   { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+
+    
+
+    /* Style the video to cover the entire screen */
+    video {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%; /* Stretch video to cover the width */
+      height: 100%; /* Stretch video to cover the height */
+      object-fit: cover; /* Ensure the video covers the screen without distortion */
+      z-index: -1; /* Place the video behind all other content */
+    }
+
+    /* Envelope Icon Styling */
+    .quill-icon {
+      position: fixed;
+      bottom: 4rem;  /* Position it at the bottom-right */
+      right: 16rem;
+      width: 5rem;
+      height: 5rem;
+      font-size: 4rem; /* Make the icon bigger */
+      text-align: center;
+      cursor: pointer;
+      border-radius: 25%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: all 0.3s ease-in-out;
+    }
+
+    /* Hover effect for Envelope */
+    .quill-icon:hover {
+      transform: scale(1.1);
+      cursor: none;
+    }
+
+    /* Style for opening */
+
+    .opening {
+      position: fixed;
+      top: 25%;
+      left: 2rem;
+    }
+
+    .openingstatement-one,
+    .openingstatement-two {
+      opacity: 0; /* Start hidden */
+      visibility: hidden; /* Hide from screen */
+      transition: opacity 4s ease-in-out; /* Smooth fade effect */
+    }
+
+    .openingstatement-one, 
+    .openingstatement-two {
+      display: block;
+      border-radius: 0.3125rem; /* 5px → 0.3125rem */
+      padding: 0.625rem 1.25rem; /* 10px 20px → 0.625rem 1.25rem */
+      font-family: 'Aboreto', Geneva, Tahoma, sans-serif;
+      font-variant-caps: petite-caps;
+      font-size: 1.35rem; /* 20px → 1.25rem */
+      text-decoration: none;
+      text-align: left;
+      color: rgb(158, 0, 0);
+      background-color: rgba(255, 255, 255, 0); /* Transparent background */
+      text-shadow: 0rem 0rem .6rem rgb(255, 255, 255); /* 2px 2px 4px → rem */
+      
+    }
+
+    /* Style for the sidebar */
+
+    .mirror-text {
+      position: relative;       /* Establish a positioning context for the pseudo-elements */
+      display: inline-block;
+      font-size: 2rem;          /* Adjust as needed */
+
+    }
+
+    /* Create two mirror copies */
+    .mirror-text::before,
+    .mirror-text::after {
+     content: attr(data-text); /* Use the same text stored in data-text */
+     position: absolute;
+     top: 0;
+     opacity: 0;
+     transition: all 0.3s ease; /* Smooth transition on hover */
+     pointer-events: none;      /* Allow clicks to pass through */
+     color: inherit;            /* Inherit the text color, or change if desired */
+    }
+
+    /* Flip the copies horizontally and offset them */
+    .mirror-text::before {
+      left: -.1em;                 /* Slight offset to the left */
+      transform: scaleX(1) translateX(-0.1em) translateY(.7em); /* Mirror and shift further left */
+    }
+
+    .mirror-text::after {
+      left: 1em;                  /* Slight offset to the right */
+      transform: scaleX(1) translateX(0.6em);  /* Mirror and shift further right */
+    }
+
+    /* On hover, reveal the mirror copies */
+    .mirror-text:hover::before,
+    .mirror-text:hover::after {
+      opacity: .5;
+      filter: blur(0.125rem); /* 2px → 0.125rem */
+    }
+
+    .mirror-text:hover {
+      filter: blur(0.05rem); /* 2px → 0.125rem */
+      cursor: none;
+    }
+
+    .sidebar {
+      position: fixed;
+      top: 80%; /* Adjust based on where you want the menu to appear vertically */
+      left: 3rem; /* 20px → 1.25rem */
+      z-index: 1; /* Place above the video */
+      display: flex;
+      flex-direction: row; /* Stack items horizontally */
+      gap: 1.25rem; /* 20px → 1.25rem */
+    }
+
+    /* Sidebar buttons/links styling */
+    .sidebar a {
+      display: block;
+      text-decoration: none;
+      color: rgb(255, 255, 255);
+      background-color: rgba(255, 255, 255, 0); /* Transparent background */
+      padding: 0.625rem 1.25rem; /* 10px 20px → 0.625rem 1.25rem */
+      border-radius: 0.3125rem; /* 5px → 0.3125rem */
+      font-size: 2rem; /* 32px → 2rem */
+      text-align: center;
+      transition: background-color 0.3s ease;
+      font-family: 'Aboreto', Geneva, Tahoma, sans-serif;
+      text-shadow: 0.125rem 0.125rem 0.25rem rgba(64, 2, 2, 0.292); /* 2px 2px 4px → rem */
+      opacity: 0; /* Start hidden */
+      transform: translateX(100%); /* Start off-screen to the right */
+      animation: fadeInMove 5s cubic-bezier(.44, 0, .51, .99) forwards; /* Custom easing */
+    }
+
+    /* Add different delays for each link */
+    .sidebar a:nth-child(1) {
+      animation-delay: 0s; /* First item starts immediately */
+    }
+
+    .sidebar a:nth-child(2) {
+      animation-delay: 1.75s; /* Second item starts after 1.75s */
+    }
+
+    .sidebar a:nth-child(3) {
+      animation-delay: 4s; /* Third item starts after 4s */
+    }
+
+    /* Animation for fading in and moving sidebar items */
+    @keyframes fadeInMove {
+      0% {
+        opacity: 0; /* Fully hidden */
+        transform: translateX(15%); /* Off-screen to the right (using %) */
+      }
+      100% {
+        opacity: 1; /* Fully visible */
+        transform: translateX(0); /* Final position */
+      }
+    }
+
+    /* Use rem-based breakpoints (48rem = 768px if 1rem = 16px) */
+    @media (max-width: 48rem) {
+      .sidebar {
+        top: 10%; /* Adjust top position */
+        left: 0.625rem; /* 10px → 0.625rem */
+      }
+      .sidebar a {
+        font-size: 1.5rem; /* 24px → 1.5rem */
+        padding: 0.5rem 1rem; /* 8px 16px → 0.5rem 1rem */
+      }
+    }
+
+    /* Mobile-specific behavior (applies for screens 48rem or smaller) */
+    @media (max-width: 48rem) {
+      .hover-text {
+        font-size: 1.75rem; /* Example alternative size for smaller devices */
+        color: rgba(104, 104, 176, 0.49); /* Different color for mobile */
+        filter: none; /* Disable hover blur */
+        opacity: 1; /* Fully visible */
+      }
+      /* Add a click interaction instead of hover for mobile */
+      .hover-text:active {
+        filter: blur(0.1875rem); /* 3px → 0.1875rem */
+        opacity: 0.5;
+      }
+    }
