@@ -1,7 +1,7 @@
 
 
     
-    //script for quill statement reveal
+    //START: script for quill statement reveal
     function toggleMessage() {
       let textOne = document.querySelector(".openingstatement-one");
       let textTwo = document.querySelector(".openingstatement-two");
@@ -43,6 +43,7 @@
         }, 6000);
       }
     }
+    //END: script for quill statement reveal
     
     //Quill SVG
     const svgCursor = `<svg
@@ -369,44 +370,74 @@
     </g>
   </g>
 </svg>
-`;
+   `;  
 
 
     // Global flag for whether the cursor is over a hover-target element
     let isHovering = false;
 
-    // Custom cursor element
+    //START: Custom cursor element
     const customCursor = document.createElement('div');
     customCursor.classList.add('custom-cursor');
     customCursor.innerHTML = svgCursor;  // SVG cursor string (without the XML declaration)
     document.body.appendChild(customCursor);
+    //END: Custom cursor element
 
     //START: STROBOSCOPIC EFFECT OF CUSTOM SVG CURSOR
-    // Function to create a trail (ghost) element at a given position
-    function createTrail(x, y) {
-      const trail = document.createElement('div');
-      trail.classList.add('cursor-trail');
-      trail.innerHTML = svgCursor;
-      trail.style.left = x + 'px';
-      trail.style.top = y + 'px';
-      document.body.appendChild(trail);
-
-      // Remove the trail element after its animation completes (2 seconds)
-      setTimeout(() => {
-        trail.remove();
-      }, 2000);
+    function getRotationDegrees(el) {
+      const st = window.getComputedStyle(el);
+      const tr = st.getPropertyValue("transform");
+      if (tr === "none") return 0;
+      // The transform is typically in matrix format: matrix(a, b, c, d, e, f)
+      const values = tr.split('(')[1].split(')')[0].split(',');
+      const a = parseFloat(values[0]);
+      const b = parseFloat(values[1]);
+      let angle = Math.round(Math.atan2(b, a) * (180 / Math.PI));
+      if (angle < 0) angle += 360;
+      return angle;
     }
+    // Define a variable to track the last time a trail was created.
+let lastTrailTime = 0;
+// Set the minimum interval (in milliseconds) between trail creations.
+const trailInterval = 15; // Adjust this value to control how often a trail appears
 
-    // Listen for mouse movement
-    document.addEventListener('mousemove', e => {
-      // Update the custom cursor position
-      customCursor.style.left = e.clientX + 'px';
-      customCursor.style.top = e.clientY + 'px';
-      // Only create a trail if not hovering over a target element
-      if (!isHovering) {
-      createTrail(e.clientX, e.clientY);
-      }
-    });
+// Define the rotation threshold (in degrees) for the cursor to be considered in its default state
+const defaultRotationThreshold = 2; // Adjust this as needed
+
+// Function to create a trail (ghost) element at a given position
+function createTrail(x, y) {
+  const trail = document.createElement('div');
+  trail.classList.add('cursor-trail');
+  trail.innerHTML = svgCursor;
+  trail.style.left = x + 'px';
+  trail.style.top = y + 'px';
+  document.body.appendChild(trail);
+
+  // Remove the trail element after its animation completes (2 seconds)
+  setTimeout(() => {
+    trail.remove();
+  }, 1000);
+}
+
+// Listen for mouse movement
+document.addEventListener('mousemove', e => {
+  // Update the custom cursor position
+  customCursor.style.left = e.clientX + 'px';
+  customCursor.style.top = e.clientY + 'px';
+  
+  // Get the current time in milliseconds.
+  const now = Date.now();
+  // Get the custom cursor's current rotation in degrees
+  const currentRotation = getRotationDegrees(customCursor);
+  
+   // Only create a new trail if not hovering and enough time has passed.
+   if (!isHovering &&
+      Math.abs(currentRotation) < defaultRotationThreshold &&
+      (now - lastTrailTime > trailInterval)) {
+    createTrail(e.clientX, e.clientY);
+    lastTrailTime = now;
+  }
+   });
     //END: STROBOSCOPIC EFFECT OF CUSTOM SVG CURSOR
 
     //START: ROTATION ON HOVER AND EASE OUT UPON MOUSELEAVE
